@@ -1,11 +1,11 @@
 using Distributions
 using JSON
 
-n = 1
-p = 0.5
+n = 15
+p = 0.4
 d = Binomial( n,p )
 
-x = [ -5, -2.5, 0, 2.5, 5 ]
+x = [ -3, -1, 0, 1, 3 ]
 
 dmgf(t) = mgf(d, t )
 y = map( dmgf, x )

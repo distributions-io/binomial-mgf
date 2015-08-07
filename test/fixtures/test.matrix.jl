@@ -5,7 +5,7 @@ n = 1
 p = 0.5
 d = Binomial( n,p )
 
-x = linspace( 1, 0, 25 )
+x = linspace( -2, 2, 25 )
 
 dmgf(t) = mgf(d, t )
 y = map( dmgf, x )

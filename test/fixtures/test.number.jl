@@ -1,8 +1,8 @@
 using Distributions
 using JSON
 
-n = 1
-p = 0.5
+n = 3
+p = 0.2
 d = Binomial( n,p )
 
 x = [ -5, -2.5, 0, 2.5, 5 ]
