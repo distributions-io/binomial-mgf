@@ -7,12 +7,12 @@ Moment-Generating Function
 The [moment-generating function](https://en.wikipedia.org/wiki/Moment-generating_function) for a [Binomial](https://en.wikipedia.org/wiki/Binomial_distribution) random variable is
 
 <div class="equation" align="center" data-raw-text="
-    M_X(t) := \mathbb{E}\!\left[e^{tX}\right]" data-equation="eq:mgf_function">
-	<img src="" alt="Moment-generating function (MGF) for a Binomial distribution.">
+	M_X(t) := \mathbb{E}\!\left[e^{tX}\right] = (1-p + pe^t)^n" data-equation="eq:mgf_function">
+	<img src="https://cdn.rawgit.com/distributions-io/binomial-mgf/e4286a821968f170c25f33ef369a336210bb0cf5/docs/img/eqn.svg" alt="Moment-generating function (MGF) for a Binomial distribution.">
 	<br>
 </div>
 
-where `n` is the number of trials and `p` is the success probability.
+where the non-negative integer `n` is the number of trials and `0 <= p <= 1` is the success probability.
 
 ## Installation
 
@@ -41,18 +41,18 @@ var matrix = require( 'dstructs-matrix' ),
 	i;
 
 out = mgf( 1 );
-// returns
+// returns ~1.859
 
 out = mgf( -1 );
-// returns 0
+// returns ~0.684
 
 t = [ 0, 0.5, 1, 1.5, 2, 2.5 ];
 out = mgf( t );
-// returns [...]
+// returns [ 1, ~1.324, ~1.859, ~2.741, ~4.195, ~6.591 ]
 
 t = new Int8Array( t );
 out = mgf( t );
-// returns Float64Array( [...] )
+// returns Float64Array( [1,1,~1.859,~1.859,~4.195,~4.195] )
 
 t = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
@@ -67,9 +67,9 @@ mat = matrix( t, [3,2], 'float32' );
 
 out = mgf( mat );
 /*
-	[
-
-	   ]
+	[ 1.000  ~1.324
+	  ~1.859 ~2.741
+	  ~4.195, ~6.591 ]
 */
 ```
 
@@ -77,8 +77,8 @@ The function accepts the following `options`:
 
 *	__n__: number of trials. Default: `1`.
 *	__p__: success probability. Default: `0.5`.
-* 	__accessor__: accessor `function` for accessing `array` values.
-* 	__dtype__: output [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays) or [`matrix`](https://github.com/dstructs/matrix) data type. Default: `float64`.
+*	 __accessor__: accessor `function` for accessing `array` values.
+*	 __dtype__: output [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays) or [`matrix`](https://github.com/dstructs/matrix) data type. Default: `float64`.
 *	__copy__: `boolean` indicating if the `function` should return a new data structure. Default: `true`.
 *	__path__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path.
 *	__sep__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path separator. Default: `'.'`.
@@ -90,9 +90,9 @@ var t = [ 0, 0.5, 1, 1.5, 2, 2.5 ];
 
 var out = mgf( t, {
 	'n': 2,
-	'p': 1
+	'p': 0.6
 });
-// returns [...]
+// returns [ 1, ~2.681, ~8.377, ~29.475, ~112.919, ~458.224 ]
 ```
 
 For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
@@ -114,7 +114,7 @@ function getValue( d, i ) {
 var out = mgf( data, {
 	'accessor': getValue
 });
-// returns [...]
+// returns [ 1, ~1.324, ~1.859, ~2.741, ~4.195, ~6.591 ]
 ```
 
 
@@ -136,12 +136,12 @@ var out = mgf( data, {
 });
 /*
 	[
-		{'x':[0,]},
-		{'x':[1,]},
-		{'x':[2,]},
-		{'x':[3,]},
-		{'x':[4,]},
-		{'x':[5,]}
+		{'x':[0,1]},
+		{'x':[1,~1.324]},
+		{'x':[2,~1.859]},
+		{'x':[3,~2.741]},
+		{'x':[4,~4.195]},
+		{'x':[5,~6.591]}
 	]
 */
 
@@ -159,13 +159,13 @@ t = new Int8Array( [0,1,2,3,4] );
 out = mgf( t, {
 	'dtype': 'int32'
 });
-// returns Int32Array( [...] )
+// returns Int32Array( [1,1,4,10,27] )
 
 // Works for plain arrays, as well...
-out = mgf( [0,0.5,1,1.5,2], {
+out = mgf( [0,1,2,3,4], {
 	'dtype': 'uint8'
 });
-// returns Uint8Array( [...] )
+// returns Uint8Array( [1,1,4,10,27] )
 ```
 
 By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
@@ -177,12 +177,12 @@ var bool,
 	t,
 	i;
 
-t = [ 0, 0.5, 1, 1.5, 2 ];
+t = [ 0, 0.5, 1, 1.5, 2, 2.5 ];
 
 out = mgf( t, {
 	'copy': false
 });
-// returns [...]
+// returns [ 1, ~1.324, ~1.859, ~2.741, ~4.195, ~6.591 ]
 
 bool = ( t === out );
 // returns true
@@ -202,9 +202,9 @@ out = mgf( mat, {
 	'copy': false
 });
 /*
-	[
-
-	   ]
+	[ 1.000  ~1.324
+	  ~1.859 ~2.741
+	  ~4.195, ~6.591 ]
 */
 
 bool = ( mat === out );
