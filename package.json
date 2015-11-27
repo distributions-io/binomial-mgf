@@ -20,7 +20,7 @@
   "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "git://github.com/compute-io/binomial-mgf.git"
+    "url": "git://github.com/distributions-io/binomial-mgf.git"
   },
   "keywords": [
     "distributions.io",
@@ -30,10 +30,15 @@
     "stats",
     "mgf",
     "generating functions",
-    "moments"
+    "moments",
+    "successes",
+    "independent trials",
+    "discrete",
+    "bernoulli",
+    "exponential family"
   ],
   "bugs": {
-    "url": "https://github.com/compute-io/binomial-mgf/issues"
+    "url": "https://github.com/distributions-io/binomial-mgf/issues"
   },
   "dependencies": {
     "compute-array-constructors": "^1.0.0",
